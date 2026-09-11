@@ -1,5 +1,5 @@
 {
-  "name": "@menelaosi/react-natal-chart",
+  "name": "@menelaos/react-natal-chart",
   "version": "0.1.0",
   "description": "A React component for rendering natal (and transit bi-wheel) astrology charts as SVG.",
   "license": "MIT",
@@ -34,6 +34,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
     "test": "vitest run --passWithNoTests",
+    "example": "npm run build && node scripts/generate-example.cjs",
     "prepublishOnly": "npm run typecheck && npm run build"
   },
   "peerDependencies": {
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.4",
     "circular-natal-horoscope-js": "^1.1.0",
     "eslint": "^10.9.0",
     "eslint-config-prettier": "^10.1.5",
@@ -50,6 +52,7 @@
     "globals": "^17.11.0",
     "prettier": "^3.9.6",
     "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "tsup": "^8.3.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.67.0",

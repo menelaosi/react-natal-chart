@@ -1,9 +1,10 @@
 name: Publish
 
-# Publishes to npm on every version tag (v0.1.0, v0.2.0, ...). Requires an
-# NPM_TOKEN repo secret — generate an "Automation" token from your npm account
-# (npmjs.com -> Access Tokens) and add it under Settings -> Secrets and
-# variables -> Actions.
+# Publishes to npm on every version tag (v0.1.0, v0.2.0, ...) via npm Trusted
+# Publishing (OIDC) — no stored token. Set this repo + this workflow file as
+# the Trusted Publisher on the package's Settings page at npmjs.com (only
+# possible after the package's first version has been published manually:
+# `npm login && npm publish --access public` from a local checkout).
 on:
   push:
     tags: ['v*.*.*']
@@ -24,5 +25,3 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
