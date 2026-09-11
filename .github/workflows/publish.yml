@@ -1,0 +1,28 @@
+name: Publish
+
+# Publishes to npm on every version tag (v0.1.0, v0.2.0, ...). Requires an
+# NPM_TOKEN repo secret — generate an "Automation" token from your npm account
+# (npmjs.com -> Access Tokens) and add it under Settings -> Secrets and
+# variables -> Actions.
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
