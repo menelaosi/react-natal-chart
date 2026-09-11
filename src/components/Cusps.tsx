@@ -4,7 +4,7 @@ import type { CuspNumber, LocatedPoint, Point } from '../types';
 import AstrologyLine from './AstrologySymbols/AstrologyLine';
 import CuspGlyph from './AstrologySymbols/CuspGlyph';
 
-type AstrologyCuspsProps = {
+type CuspsProps = {
   readonly point: Point;
   readonly numbersRadius: number;
   readonly pointRadius: number;
@@ -22,7 +22,7 @@ function isInCollision(angle: number, locatedPoints: LocatedPoint[]): boolean {
 }
 
 /** House cusp spokes and their numerals; a spoke near a planet cluster is drawn shorter to clear the glyphs. */
-function AstrologyCusps({
+function Cusps({
   point,
   numbersRadius,
   pointRadius,
@@ -30,7 +30,7 @@ function AstrologyCusps({
   cuspPositions,
   shift,
   locatedPoints,
-}: AstrologyCuspsProps) {
+}: CuspsProps) {
   const startRadius = numbersRadius - COLLISION_RADIUS;
   const dashedLineRadius = pointRadius + 2 * COLLISION_RADIUS;
 
@@ -72,4 +72,4 @@ function AstrologyCusps({
   );
 }
 
-export default AstrologyCusps;
+export default Cusps;

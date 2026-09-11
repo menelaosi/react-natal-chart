@@ -1,7 +1,7 @@
 import type { Point } from '../types';
 import AstrologyCircle from './AstrologySymbols/AstrologyCircle';
 
-type AstrologyCirclesProps = {
+type CirclesProps = {
   readonly point: Point;
   readonly radius: number;
   readonly thickness: number;
@@ -9,7 +9,7 @@ type AstrologyCirclesProps = {
 };
 
 /** The concentric outline circles that separate the wheel's rings. */
-function AstrologyCircles({ point, radius, thickness, backgroundRadius }: AstrologyCirclesProps) {
+function Circles({ point, radius, thickness, backgroundRadius }: CirclesProps) {
   return (
     <g id="circles">
       <AstrologyCircle point={point} radius={thickness} />
@@ -19,4 +19,4 @@ function AstrologyCircles({ point, radius, thickness, backgroundRadius }: Astrol
   );
 }
 
-export default AstrologyCircles;
+export default Circles;

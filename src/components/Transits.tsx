@@ -14,7 +14,7 @@ import AstrologyLine from './AstrologySymbols/AstrologyLine';
 import AstrologySegment from './AstrologySymbols/AstrologySegment';
 import PlanetGlyph from './AstrologySymbols/PlanetGlyph';
 
-type AstrologyTransitsProps = {
+type TransitsProps = {
   readonly point: Point;
   readonly hubRadius: number; // Inner circle — where the transit→natal chords anchor, shared with the natal aspects.
   readonly wheelRadius: number; // Natal wheel edge — the transit band starts just outside this.
@@ -37,7 +37,7 @@ const RING_HALF_WIDTH = 16;
  * aspect chords) keeps the two aspect sets distinct on the shared inner circle;
  * each glyph gets a pale halo so it holds up over the band.
  */
-function AstrologyTransits({
+function Transits({
   point,
   hubRadius,
   wheelRadius,
@@ -47,7 +47,7 @@ function AstrologyTransits({
   natalLongitudes,
   locatedPoints,
   contacts,
-}: AstrologyTransitsProps) {
+}: TransitsProps) {
   const innerRadius = ringRadius - RING_HALF_WIDTH;
   const outerRadius = ringRadius + RING_HALF_WIDTH;
 
@@ -112,4 +112,4 @@ function AstrologyTransits({
   );
 }
 
-export default AstrologyTransits;
+export default Transits;

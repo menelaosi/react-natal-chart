@@ -1,7 +1,7 @@
 import type { Point } from '../types';
 import AstrologySegment from './AstrologySymbols/AstrologySegment';
 
-type AstrologyBackgroundProps = {
+type BackgroundProps = {
   readonly id: string;
   readonly point: Point;
   readonly radius: number;
@@ -9,7 +9,7 @@ type AstrologyBackgroundProps = {
 };
 
 /** The opaque disc behind a wheel (radix or transit), drawn as one wide ring segment. */
-function AstrologyBackground({ id, point, radius, thickness }: AstrologyBackgroundProps) {
+function Background({ id, point, radius, thickness }: BackgroundProps) {
   return (
     <g id={id}>
       <AstrologySegment point={point} radius={radius} thickness={thickness} />
@@ -17,4 +17,4 @@ function AstrologyBackground({ id, point, radius, thickness }: AstrologyBackgrou
   );
 }
 
-export default AstrologyBackground;
+export default Background;

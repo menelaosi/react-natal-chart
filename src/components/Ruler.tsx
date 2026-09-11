@@ -4,7 +4,7 @@ import type { Point } from '../types';
 import AstrologyCircle from './AstrologySymbols/AstrologyCircle';
 import AstrologyLine from './AstrologySymbols/AstrologyLine';
 
-type AstrologyRulerProps = {
+type RulerProps = {
   readonly point: Point;
   readonly startRadius: number;
   readonly rulerRadius: number;
@@ -40,13 +40,7 @@ function getRulerPositions(
 }
 
 /** The degree tick ring just inside a wheel's rim (72 ticks, every 5°). */
-function AstrologyRuler({
-  point,
-  startRadius,
-  rulerRadius,
-  startAngle,
-  isTransit = false,
-}: AstrologyRulerProps) {
+function Ruler({ point, startRadius, rulerRadius, startAngle, isTransit = false }: RulerProps) {
   // The degree ruler is a band just inside its rim (startRadius), so its ticks
   // sit on the white wheel rather than the dark page margin.
   const endRadius = startRadius - rulerRadius;
@@ -64,4 +58,4 @@ function AstrologyRuler({
   );
 }
 
-export default AstrologyRuler;
+export default Ruler;

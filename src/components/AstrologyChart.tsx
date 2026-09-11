@@ -24,15 +24,15 @@ import {
 import type { TransitContact } from '../lib/transits';
 import type { CelestialBodyPosition, LocatedPoint, Point } from '../types';
 import { Planet } from '../types';
-import AstrologyAspects from './AstrologyAspects';
-import AstrologyAxis from './AstrologyAxis';
-import AstrologyBackground from './AstrologyBackground';
-import AstrologyCircles from './AstrologyCircles';
-import AstrologyCusps from './AstrologyCusps';
-import AstrologyPlanets from './AstrologyPlanets';
-import AstrologyRuler from './AstrologyRuler';
-import AstrologyTransits from './AstrologyTransits';
-import AstrologyUniverse from './AstrologyUniverse';
+import Aspects from './Aspects';
+import Axes from './Axes';
+import Background from './Background';
+import Circles from './Circles';
+import Cusps from './Cusps';
+import Planets from './Planets';
+import Ruler from './Ruler';
+import Transits from './Transits';
+import Universe from './Universe';
 
 type AstrologyChartProps = {
   readonly horoscope: Horoscope;
@@ -54,7 +54,7 @@ type AstrologyChartProps = {
 const TRANSIT_MARGIN = MARGIN + 48;
 
 // The transit band hugs the wheel edge (small gap) rather than floating in the
-// margin; AstrologyTransits derives the band width from this centre line.
+// margin; Transits derives the band width from this centre line.
 const TRANSIT_RING_OFFSET = 18;
 function getCelestialBodyPositions(
   horoscope: Horoscope,
@@ -197,9 +197,9 @@ function AstrologyChartComponent({
   return (
     <svg id="chart" viewBox={`0 0 ${height} ${width}`} preserveAspectRatio="xMinYMin meet">
       <circle cx={x} cy={y} r={thickness} fill={WHITE} />
-      <AstrologyAspects point={point} radius={thickness} shift={shift} lines={aspectLines} />
+      <Aspects point={point} radius={thickness} shift={shift} lines={aspectLines} />
       {transit && transitPositions && (
-        <AstrologyTransits
+        <Transits
           point={point}
           hubRadius={thickness}
           wheelRadius={radius}
@@ -212,25 +212,15 @@ function AstrologyChartComponent({
         />
       )}
       <g id="radix">
-        <AstrologyBackground
+        <Background
           id="radix-background"
           point={point}
           radius={radixRadius}
           thickness={thickness}
         />
-        <AstrologyUniverse
-          point={point}
-          shift={shift}
-          radius={radius}
-          backgroundRadius={radixRadius}
-        />
-        <AstrologyRuler
-          point={point}
-          startRadius={radius}
-          rulerRadius={rulerRadius}
-          startAngle={shift}
-        />
-        <AstrologyPlanets
+        <Universe point={point} shift={shift} radius={radius} backgroundRadius={radixRadius} />
+        <Ruler point={point} startRadius={radius} rulerRadius={rulerRadius} startAngle={shift} />
+        <Planets
           point={point}
           radius={radius}
           planets={celestialBodyPositions}
@@ -239,7 +229,7 @@ function AstrologyChartComponent({
           pointRadius={pointRadius}
           shift={shift}
         />
-        <AstrologyCusps
+        <Cusps
           point={point}
           numbersRadius={numbersRadius}
           pointRadius={pointRadius}
@@ -248,14 +238,14 @@ function AstrologyChartComponent({
           shift={shift}
           locatedPoints={locatedPoints}
         />
-        <AstrologyAxis
+        <Axes
           point={point}
           radius={radius}
           cuspPositions={cuspPositions}
           shift={shift}
           stroke={transit ? DARK_GRAY : LIGHT_GRAY}
         />
-        <AstrologyCircles
+        <Circles
           point={point}
           radius={radius}
           thickness={thickness}

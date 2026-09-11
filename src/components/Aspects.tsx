@@ -4,7 +4,7 @@ import { ASPECT_COLOR, NEUTRAL_ASPECT_COLOR } from '../lib/theme';
 import type { Point } from '../types';
 import AstrologyLine from './AstrologySymbols/AstrologyLine';
 
-type AstrologyAspectsProps = {
+type AspectsProps = {
   readonly point: Point;
   readonly radius: number; // radius the chords are anchored at — the inner circle
   readonly shift: number;
@@ -16,7 +16,7 @@ type AstrologyAspectsProps = {
  * Color keys the aspect family; each line thins and fades as its orb widens
  * toward the limit, so exact aspects read loudest.
  */
-function AstrologyAspects({ point, radius, shift, lines }: AstrologyAspectsProps) {
+function Aspects({ point, radius, shift, lines }: AspectsProps) {
   return (
     <g id="aspects">
       {lines.map(({ aspect, from, orb, orbUsed, to }, index) => (
@@ -32,4 +32,4 @@ function AstrologyAspects({ point, radius, shift, lines }: AstrologyAspectsProps
   );
 }
 
-export default AstrologyAspects;
+export default Aspects;

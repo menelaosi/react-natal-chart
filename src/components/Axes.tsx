@@ -4,7 +4,7 @@ import { Axis, type Point } from '../types';
 import AstrologyLine from './AstrologySymbols/AstrologyLine';
 import AxisGlyph from './AstrologySymbols/AxisGlyph';
 
-type AstrologyAxisProps = {
+type AxesProps = {
   readonly point: Point;
   readonly radius: number;
   readonly cuspPositions: number[];
@@ -21,13 +21,7 @@ const AXES: readonly { axis: Axis; labelOffset: number }[] = [
 ];
 
 /** The four angle spokes (AC/IC/DC/MC) and their labels, past the wheel's rim. */
-function AstrologyAxis({
-  point,
-  radius,
-  cuspPositions,
-  shift,
-  stroke = LIGHT_GRAY,
-}: AstrologyAxisProps) {
+function Axes({ point, radius, cuspPositions, shift, stroke = LIGHT_GRAY }: AxesProps) {
   const axisRadius = radius + radius / INNER_CIRCLE_RADIUS_RATIO / 4;
 
   return (
@@ -54,4 +48,4 @@ function AstrologyAxis({
   );
 }
 
-export default AstrologyAxis;
+export default Axes;

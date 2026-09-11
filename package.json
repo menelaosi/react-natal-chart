@@ -1,6 +1,6 @@
 {
   "name": "@menelaos/react-natal-chart",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A React component for rendering natal (and transit bi-wheel) astrology charts as SVG.",
   "license": "MIT",
   "author": "Menelaos Ioannou",
@@ -12,7 +12,13 @@
   "bugs": {
     "url": "https://github.com/MenelaosI/react-natal-chart/issues"
   },
-  "keywords": ["react", "astrology", "natal-chart", "svg", "horoscope"],
+  "keywords": [
+    "react",
+    "astrology",
+    "natal-chart",
+    "svg",
+    "horoscope"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -24,7 +30,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

@@ -12,7 +12,7 @@ import AstrologyLine from './AstrologySymbols/AstrologyLine';
 import AstrologyText from './AstrologySymbols/AstrologyText';
 import PlanetGlyph from './AstrologySymbols/PlanetGlyph';
 
-type AstrologyPlanetsProps = {
+type PlanetsProps = {
   readonly point: Point;
   readonly radius: number;
   readonly planets: Record<Planet, CelestialBodyPosition | undefined>;
@@ -23,7 +23,7 @@ type AstrologyPlanetsProps = {
 };
 
 /** Planet glyphs at their spread (collision-adjusted) positions, each with a pointer back to its true degree and its degree/retrograde/dignity label. */
-function AstrologyPlanets({
+function Planets({
   point,
   radius,
   planets,
@@ -31,7 +31,7 @@ function AstrologyPlanets({
   rulerRadius,
   pointRadius,
   shift,
-}: AstrologyPlanetsProps) {
+}: PlanetsProps) {
   // The pointer marks a planet's true degree just inside the ruler; when the
   // glyph is nudged inward to dodge a neighbor, a connector links the two.
   const pointerRadius = radius - rulerRadius;
@@ -96,4 +96,4 @@ function AstrologyPlanets({
   );
 }
 
-export default AstrologyPlanets;
+export default Planets;

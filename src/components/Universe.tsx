@@ -5,7 +5,7 @@ import { ZODIAC_SIGNS } from '../types';
 import AstrologySegment from './AstrologySymbols/AstrologySegment';
 import ZodiacGlyph from './AstrologySymbols/ZodiacGlyph';
 
-type AstrologyUniverseProps = {
+type UniverseProps = {
   readonly point: Point;
   readonly shift: number;
   readonly radius: number;
@@ -13,7 +13,7 @@ type AstrologyUniverseProps = {
 };
 
 /** The zodiac band: 12 sign segments and their coloured glyphs. */
-function AstrologyUniverse({ point, shift, radius, backgroundRadius }: AstrologyUniverseProps) {
+function Universe({ point, shift, radius, backgroundRadius }: UniverseProps) {
   const glyphRadius = radius - radius / INNER_CIRCLE_RADIUS_RATIO / 2;
 
   return (
@@ -42,4 +42,4 @@ function AstrologyUniverse({ point, shift, radius, backgroundRadius }: Astrology
   );
 }
 
-export default AstrologyUniverse;
+export default Universe;

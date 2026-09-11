@@ -80,6 +80,8 @@ visualization:
 - **Chart summaries** — `buildChartSummary` / `buildTransitSummary` flatten a
   `Horoscope` into a small, JSON-serializable shape (placements, angles,
   aspects) suitable for sending to an API or an LLM.
+- **Ephemeris helpers** — `getCelestialBody`, `longitudeOf`, `cuspLongitude`,
+  `isRetrograde`, `longitudeOfMidheavenAscendant`.
 - **Geometry helpers** — `getPointPosition`, `normalizeAngle`,
   `angularDistance`, `getSign`, `assembleLocatedPoints` (the collision-based
   glyph fan-out).
