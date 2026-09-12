@@ -2,3 +2,10 @@ node_modules
 dist
 *.tsbuildinfo
 .DS_Store
+
+# Editor — personal VSCode settings stay local; extensions.json is worth sharing
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code project instructions — personal, not shared
+CLAUDE.md

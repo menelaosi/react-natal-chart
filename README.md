@@ -37,6 +37,33 @@ aspects). You can also build the `Horoscope` yourself and pass it straight
 through — the component only reads from it, it never needs your birth data
 directly.
 
+### Customizing the cast (`getHoroscope` options)
+
+Pass a third `options` argument to override any of the defaults above —
+anything you leave out keeps its default:
+
+```tsx
+const horoscope = getHoroscope(birthDate, birthPlace, {
+  houseSystem: 'placidus',
+  zodiac: 'sidereal',
+});
+```
+
+`options` accepts:
+
+| Field              | Type                     | Default               | Notes                                                                                                        |
+| ------------------ | ------------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `houseSystem`      | `HouseSystem`            | `'whole-sign'`        | `'equal-house'`, `'koch'`, `'campanus'`, `'placidus'`, `'regiomontanus'`, `'topocentric'`, or `'whole-sign'` |
+| `zodiac`           | `ZodiacSystem`           | `'tropical'`          | `'tropical'` or `'sidereal'`                                                                                 |
+| `aspectTypes`      | `AspectType[]`           | `['major', 'minor']`  | `'major'` and/or `'minor'`                                                                                   |
+| `customOrbs`       | `Record<string, number>` | major/minor orb table | Orb, in degrees, per aspect key (e.g. `conjunction`, `square`)                                               |
+| `language`         | `string`                 | `'en'`                | ISO 639-1 code for house/sign/aspect labels                                                                  |
+| `aspectPoints`     | `string[]`               | library default       | Which bodies/points can originate an aspect                                                                  |
+| `aspectWithPoints` | `string[]`               | library default       | Which bodies/points they can aspect to                                                                       |
+
+`HouseSystem`, `ZodiacSystem`, `AspectType`, and `HoroscopeOptions` are all
+exported types, so overrides are checked at compile time.
+
 ### Transit bi-wheel
 
 Pass a `transit` prop to draw a ring of the moving planets around the natal

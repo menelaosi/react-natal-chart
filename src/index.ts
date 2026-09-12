@@ -9,7 +9,11 @@ export {
   isRetrograde,
   longitudeOf,
   longitudeOfMidheavenAscendant,
+  type AspectType,
   type Cusp,
+  type HouseSystem,
+  type HoroscopeOptions,
+  type ZodiacSystem,
 } from './lib/horoscope';
 
 export {
