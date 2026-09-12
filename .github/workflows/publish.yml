@@ -23,5 +23,9 @@ jobs:
           cache: npm
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      # Trusted Publishing (OIDC, no stored token) needs npm >=11.5.0; Node 22
+      # only bundles npm ~10.9, which silently skips the OIDC exchange and
+      # publishes unauthenticated (registry replies 404, not 401).
+      - run: npm install -g npm@latest
       - run: npm run build
       - run: npm publish --access public --provenance
