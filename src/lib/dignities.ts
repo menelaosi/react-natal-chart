@@ -87,8 +87,10 @@ const planetDignities: Record<Planet, Partial<Record<ZodiacSign, Dignity>>> = {
     Libra: Dignity.Fall,
   },
   [Planet.Chiron]: {},
+  [Planet.Sirius]: {},
   [Planet.Lilith]: {},
   [Planet.NorthNode]: {},
+  [Planet.SouthNode]: {},
 };
 
 /** Whether `planetPosition` falls within `orbit` degrees of `pointPosition`, wrapping past 0°/360°. */

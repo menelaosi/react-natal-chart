@@ -64,6 +64,22 @@ const horoscope = getHoroscope(birthDate, birthPlace, {
 `HouseSystem`, `ZodiacSystem`, `AspectType`, and `HoroscopeOptions` are all
 exported types, so overrides are checked at compile time.
 
+### What's plotted
+
+`AstrologyChart` draws everything `circular-natal-horoscope-js` computes — the
+full `Planet` union:
+
+| Type   | Points                                                                                      |
+| ------ | ------------------------------------------------------------------------------------------- |
+| Bodies | Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto, Chiron, Sirius    |
+| Points | North Node, South Node, Lilith (mean Black Moon)                                            |
+| Angles | Ascendant, Midheaven — drawn as the chart axis rather than a glyph, so not part of `Planet` |
+
+South Node is drawn as the North Node glyph rotated 180° — the traditional
+convention, since the two nodes are always in exact opposition. Sirius has no
+traditional single glyph of its own; it's drawn as a small 6-ray asterisk, the
+convention most chart-drawing software falls back to for fixed stars.
+
 ### Transit bi-wheel
 
 Pass a `transit` prop to draw a ring of the moving planets around the natal

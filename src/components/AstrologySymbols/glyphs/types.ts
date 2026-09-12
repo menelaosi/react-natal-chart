@@ -20,6 +20,7 @@ export type GlyphSpec = {
   readonly dx: number;
   readonly dy: number;
   readonly paths: readonly GlyphPath[];
+  readonly rotate?: number; // Degrees to spin the whole glyph around its own anchor (e.g. South Node = North Node rotated 180°).
 };
 
 export type GlyphProps = {

@@ -33,6 +33,7 @@ const TRANSITING_WEIGHT: Record<string, number> = {
   jupiter: 6,
   chiron: 5,
   nnode: 5,
+  snode: 5, // Always exactly opposite nnode, so carries the same transiting weight.
   mars: 4,
   sun: 4,
   venus: 3,

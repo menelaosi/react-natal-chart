@@ -3,6 +3,7 @@ import { memo } from 'react';
 import type { AspectLine } from '../lib/aspectStyle';
 import { assembleLocatedPoints, FULL_CIRCLE, getPointPosition } from '../lib/geometry';
 import {
+  aspectKeyFor,
   cuspLongitude,
   getCelestialBody,
   isRetrograde,
@@ -78,8 +79,8 @@ function getCuspPositions({ Houses }: Horoscope): number[] {
 /**
  * Resolves each major aspect from `horoscope.Aspects` into a drawable chord by
  * looking up the ecliptic longitude of both endpoints. Endpoints the wheel does
- * not plot (south node, fixed stars) are dropped. `orbUsed` rides along so the
- * renderer can fade aspects out as they approach the edge of orb.
+ * not plot are dropped. `orbUsed` rides along so the renderer can fade aspects
+ * out as they approach the edge of orb.
  */
 function getAspectLines(
   horoscope: Horoscope,
@@ -91,9 +92,7 @@ function getAspectLines(
     const { longitude } = celestialBodyPositions[planet] ?? {};
     if (longitude == null) continue;
 
-    // Aspects name the lunar node 'northnode'; every other library key already
-    // matches the Planet value we store positions under.
-    longitudeByKey[planet === Planet.NorthNode ? 'northnode' : planet] = longitude;
+    longitudeByKey[aspectKeyFor(planet)] = longitude;
   }
 
   longitudeByKey = longitudeOfMidheavenAscendant(horoscope, longitudeByKey);

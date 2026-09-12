@@ -63,8 +63,10 @@ export const Planet = {
   Neptune: 'neptune',
   Pluto: 'pluto',
   Chiron: 'chiron',
+  Sirius: 'sirius',
   Lilith: 'lilith',
   NorthNode: 'nnode',
+  SouthNode: 'snode',
 } as const;
 export type Planet = (typeof Planet)[keyof typeof Planet];
 

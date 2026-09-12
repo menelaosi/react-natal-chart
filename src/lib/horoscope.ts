@@ -84,15 +84,27 @@ export function getHoroscope(
 }
 
 // circular-natal-horoscope-js splits its results: the Sun through Pluto plus
-// Chiron live in CelestialBodies, while the lunar node and Lilith are in
-// CelestialPoints under their own key names.
+// Chiron and Sirius live in CelestialBodies, while the lunar nodes and Lilith
+// are in CelestialPoints under their own key names.
 const CELESTIAL_POINT_KEY: Partial<Record<Planet, string>> = {
   [Planet.NorthNode]: 'northnode',
+  [Planet.SouthNode]: 'southnode',
 };
+
+// The library's own key for a planet/point — same lookup getCelestialBody uses,
+// and also what point1Key/point2Key on an Aspect are named after.
+function libraryKeyFor(planet: Planet): string {
+  return CELESTIAL_POINT_KEY[planet] ?? planet;
+}
 
 /** The raw library object for a planet/point, from whichever collection holds it. */
 export function getCelestialBody({ CelestialBodies, CelestialPoints }: Horoscope, planet: Planet) {
-  return CelestialBodies?.[planet] ?? CelestialPoints?.[CELESTIAL_POINT_KEY[planet] ?? planet];
+  return CelestialBodies?.[planet] ?? CelestialPoints?.[libraryKeyFor(planet)];
+}
+
+/** An aspect's `point1Key`/`point2Key` for a planet — see {@link libraryKeyFor}. */
+export function aspectKeyFor(planet: Planet): string {
+  return libraryKeyFor(planet);
 }
 
 /** Whether a body/point from {@link getCelestialBody} is currently retrograde. */
