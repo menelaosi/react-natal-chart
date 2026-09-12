@@ -1,6 +1,6 @@
 {
   "name": "@menelaos/react-natal-chart",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A React component for rendering natal (and transit bi-wheel) astrology charts as SVG.",
   "license": "MIT",
   "author": "Menelaos Ioannou",
