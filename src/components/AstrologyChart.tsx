@@ -3,23 +3,23 @@ import { memo } from 'react';
 import type { AspectLine } from '../lib/aspectStyle';
 import { assembleLocatedPoints, FULL_CIRCLE, getPointPosition } from '../lib/geometry';
 import {
-	cuspLongitude,
-	getCelestialBody,
-	isRetrograde,
-	longitudeOf,
-	longitudeOfMidheavenAscendant,
-	type Cusp,
+  cuspLongitude,
+  getCelestialBody,
+  isRetrograde,
+  longitudeOf,
+  longitudeOfMidheavenAscendant,
+  type Cusp,
 } from '../lib/horoscope';
 import {
-	COLLISION_RADIUS,
-	DARK_GRAY,
-	INDOOR_CIRCLE_RADIUS_RATIO,
-	INNER_CIRCLE_RADIUS_RATIO,
-	LIGHT_GRAY,
-	MARGIN,
-	PADDING,
-	RULER_RADIUS,
-	WHITE,
+  COLLISION_RADIUS,
+  DARK_GRAY,
+  INDOOR_CIRCLE_RADIUS_RATIO,
+  INNER_CIRCLE_RADIUS_RATIO,
+  LIGHT_GRAY,
+  MARGIN,
+  PADDING,
+  RULER_RADIUS,
+  WHITE,
 } from '../lib/theme';
 import type { TransitContact } from '../lib/transits';
 import type { CelestialBodyPosition, LocatedPoint, Point } from '../types';
@@ -182,7 +182,7 @@ function AstrologyChartComponent({
   const pointRadius = radius - (radiusRatio + 2 * rulerRadius + PADDING);
   const numbersRadius = thickness + COLLISION_RADIUS;
   const endDashedLineRadius = radius - (radiusRatio + rulerRadius);
-  
+
   // Positions of bodies to graph
   const celestialBodyPositions = getCelestialBodyPositions(horoscope);
   const cuspPositions = getCuspPositions(horoscope);
