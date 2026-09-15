@@ -107,21 +107,34 @@ export function aspectKeyFor(planet: Planet): string {
   return libraryKeyFor(planet);
 }
 
+// Inverse of aspectKeyFor, built once since the mapping is fixed and each
+// planet's library key is unique.
+const PLANET_BY_ASPECT_KEY: Record<string, Planet> = Object.fromEntries(
+  Object.values(Planet).map((planet) => [aspectKeyFor(planet), planet]),
+);
+
+/** The Planet an aspect's `point1Key`/`point2Key` refers to — see {@link aspectKeyFor}. */
+export function planetForAspectKey(key: string): Planet | undefined {
+  return PLANET_BY_ASPECT_KEY[key];
+}
+
 /** Whether a body/point from {@link getCelestialBody} is currently retrograde. */
 export function isRetrograde(body: ReturnType<typeof getCelestialBody>): boolean {
   return Boolean(body?.isRetrograde);
 }
 
+function numberOrUndefined(value?: number): number | undefined {
+  return typeof value === 'number' ? value : undefined;
+}
+
 /** Get longitude or DecimalDegree */
 export function longitudeOf(body: CelestialBody | undefined) {
-  const longitude = body?.ChartPosition?.Ecliptic?.DecimalDegrees;
-  return typeof longitude === 'number' ? longitude : undefined;
+  return numberOrUndefined(body?.ChartPosition?.Ecliptic?.DecimalDegrees);
 }
 
 /** A house cusp's starting ecliptic longitude — same idea as {@link longitudeOf}, one level deeper. */
 export function cuspLongitude(cusp: Cusp | undefined) {
-  const longitude = cusp?.ChartPosition?.StartPosition?.Ecliptic?.DecimalDegrees;
-  return typeof longitude === 'number' ? longitude : undefined;
+  return numberOrUndefined(cusp?.ChartPosition?.StartPosition?.Ecliptic?.DecimalDegrees);
 }
 
 export function longitudeOfMidheavenAscendant(

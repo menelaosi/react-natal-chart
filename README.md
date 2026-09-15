@@ -114,6 +114,65 @@ function App() {
 }
 ```
 
+### Table components
+
+For a scannable list view alongside (or instead of) the wheel, two plain HTML
+`<table>` components are included. Both are presentational — pass them the
+same summary data `buildChartSummary` produces and they render, no state of
+their own:
+
+```tsx
+import {
+  AspectTable,
+  PlacementTable,
+  buildChartSummary,
+  getHoroscope,
+} from '@menelaos/react-natal-chart';
+
+const horoscope = getHoroscope(birthDate, birthPlace);
+const summary = buildChartSummary(horoscope, birthDate.toISOString(), birthPlace);
+
+function ChartTables() {
+  return (
+    <>
+      <PlacementTable placements={summary.placements} sortBy="house" />
+      <AspectTable aspects={summary.aspects} sortBy="orb" />
+    </>
+  );
+}
+```
+
+**`PlacementTable`** — one row per planet/point: sign, house, degree in sign,
+and retrograde status.
+
+| Prop         | Type                        | Default        |
+| ------------ | --------------------------- | -------------- |
+| `placements` | `Placement[]`               | —              |
+| `sortBy`     | `'importance'` \| `'house'` | `'importance'` |
+
+`'importance'` orders rows the same way `Planet` is declared (Sun through
+South Node); `'house'` orders ascending by house number, with placements that
+have no house (`house: null`) sorted last.
+
+**`AspectTable`** — one row per aspect within a single chart: the two bodies,
+the aspect type (with its classic glyph, colored the same way the wheel's
+chords are), and the orb.
+
+| Prop      | Type                      | Default |
+| --------- | ------------------------- | ------- |
+| `aspects` | `AspectSummary[]`         | —       |
+| `sortBy`  | `'orb'` \| `'importance'` | `'orb'` |
+
+`'orb'` puts the tightest, most exact aspects first; `'importance'` orders by
+the `Planet` declaration order of the `from` body (falling back to `to` to
+break ties). A body an aspect names that isn't a `Planet` — the ascendant or
+midheaven, say — is rendered by its raw key rather than failing.
+
+Both `sortPlacements`/`sortAspects` (the sorting logic itself) and
+`PLANET_LABEL`/`ASPECT_SYMBOL` (the display-name/glyph lookup tables the
+components use) are exported separately if you want to build your own table
+or list around the same data.
+
 ## What else is exported
 
 Beyond the chart itself, the library exposes the pieces it's built from —
@@ -129,7 +188,12 @@ visualization:
   `angularDistance`, `getSign`, `assembleLocatedPoints` (the collision-based
   glyph fan-out).
 - **Domain data** — `getDignities` (essential dignities), `getTransitContacts`
-  / `rankTransitContacts`, `Planet`, `ZodiacSign`, `SIGN_COLOR`, `SIGN_EMOJI`.
+  / `rankTransitContacts`, `Planet`, `ZodiacSign`, `SIGN_COLOR`, `SIGN_EMOJI`,
+  `PLANET_LABEL`, `ASPECT_SYMBOL`.
+- **Table sorting** — `sortPlacements`, `sortAspects` (see
+  [Table components](#table-components)), plus `planetForAspectKey` and
+  `zodiacSignFromKey` for mapping an aspect's/placement's raw library keys
+  back to `Planet`/`ZodiacSign`.
 
 See [`src/index.ts`](src/index.ts) for the full public surface.
 

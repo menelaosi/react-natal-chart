@@ -100,6 +100,24 @@ export const SIGN_EMOJI: Record<ZodiacSign, string> = {
   Pisces: '♓',
 };
 
+export const PLANET_LABEL: Record<Planet, string> = {
+  [Planet.Sun]: 'Sun',
+  [Planet.Moon]: 'Moon',
+  [Planet.Mercury]: 'Mercury',
+  [Planet.Venus]: 'Venus',
+  [Planet.Mars]: 'Mars',
+  [Planet.Jupiter]: 'Jupiter',
+  [Planet.Saturn]: 'Saturn',
+  [Planet.Uranus]: 'Uranus',
+  [Planet.Neptune]: 'Neptune',
+  [Planet.Pluto]: 'Pluto',
+  [Planet.Chiron]: 'Chiron',
+  [Planet.Sirius]: 'Sirius',
+  [Planet.Lilith]: 'Lilith',
+  [Planet.NorthNode]: 'North Node',
+  [Planet.SouthNode]: 'South Node',
+};
+
 export const ZODIAC_SIGNS = [
   'Aries',
   'Taurus',

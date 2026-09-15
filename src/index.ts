@@ -1,6 +1,8 @@
 // Public API.
 
 export { default as AstrologyChart } from './components/AstrologyChart';
+export { default as AspectTable } from './components/AspectTable';
+export { default as PlacementTable } from './components/PlacementTable';
 
 export {
   cuspLongitude,
@@ -9,6 +11,7 @@ export {
   isRetrograde,
   longitudeOf,
   longitudeOfMidheavenAscendant,
+  planetForAspectKey,
   type AspectType,
   type Cusp,
   type HouseSystem,
@@ -31,6 +34,7 @@ export { getDignities } from './lib/dignities';
 
 export {
   ASPECT_COLOR,
+  ASPECT_SYMBOL,
   BLACK,
   CIRCLE_STROKE,
   COLLISION_RADIUS,
@@ -50,6 +54,15 @@ export {
 } from './lib/theme';
 
 export { aspectLineStyle, calculateExactness, type AspectLine } from './lib/aspectStyle';
+
+export { zodiacSignFromKey } from './lib/signs';
+
+export {
+  sortAspects,
+  sortPlacements,
+  type AspectSortMode,
+  type PlacementSortMode,
+} from './lib/tableSort';
 
 export {
   getTransitContacts,
@@ -79,6 +92,7 @@ export {
   Axis,
   Dignity,
   Planet,
+  PLANET_LABEL,
   SIGN_COLOR,
   SIGN_EMOJI,
   ZODIAC_SIGNS,

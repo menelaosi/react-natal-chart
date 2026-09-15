@@ -30,3 +30,13 @@ export const ASPECT_COLOR: Record<string, string> = {
   square: HARD_ASPECT_COLOR,
   opposition: HARD_ASPECT_COLOR,
 };
+
+// Classic glyphs for the five major aspects — the only ones buildChartSummary
+// reports (it filters to aspectLevel === 'major'), so no fallback case is needed.
+export const ASPECT_SYMBOL: Record<string, string> = {
+  conjunction: '☌',
+  sextile: '⚹',
+  square: '□',
+  trine: '△',
+  opposition: '☍',
+};
