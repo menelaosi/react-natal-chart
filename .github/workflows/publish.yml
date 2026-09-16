@@ -21,7 +21,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          registry-url: 'https://registry.npmjs.org'
+          # No registry-url here on purpose: setting it makes setup-node write
+          # //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN} into .npmrc.
+          # With no NODE_AUTH_TOKEN secret (correct for trusted publishing),
+          # that resolves to an empty token, which npm treats as "auth is
+          # already configured" and skips the OIDC trusted-publisher exchange
+          # entirely — the registry then 404s the unauthenticated publish
+          # (it masks 403 as 404). npm publishes to the default registry
+          # either way, so this option isn't needed for OIDC to work.
       - run: npm ci
       # Trusted Publishing (OIDC, no stored token) needs npm >=11.5.0; Node 22
       # only bundles npm ~10.9, which silently skips the OIDC exchange and
