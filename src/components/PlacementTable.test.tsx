@@ -76,4 +76,15 @@ describe('PlacementTable', () => {
     const html = renderToStaticMarkup(<PlacementTable placements={[]} />);
     expect(html.match(/<tr/g)).toHaveLength(1); // header row only
   });
+
+  it('forwards className and style to the <table> element', () => {
+    const html = renderToStaticMarkup(
+      <PlacementTable
+        placements={[placement()]}
+        className="my-table"
+        style={{ color: 'red' }}
+      />,
+    );
+    expect(html).toContain('<table class="my-table" style="color:red">');
+  });
 });

@@ -149,6 +149,8 @@ and retrograde status.
 | ------------ | --------------------------- | -------------- |
 | `placements` | `Placement[]`               | —              |
 | `sortBy`     | `'importance'` \| `'house'` | `'importance'` |
+| `className`  | `string`                    | —              |
+| `style`      | `CSSProperties`             | —              |
 
 `'importance'` orders rows the same way `Planet` is declared (Sun through
 South Node); `'house'` orders ascending by house number, with placements that
@@ -158,15 +160,21 @@ have no house (`house: null`) sorted last.
 the aspect type (with its classic glyph, colored the same way the wheel's
 chords are), and the orb.
 
-| Prop      | Type                      | Default |
-| --------- | ------------------------- | ------- |
-| `aspects` | `AspectSummary[]`         | —       |
-| `sortBy`  | `'orb'` \| `'importance'` | `'orb'` |
+| Prop        | Type                      | Default |
+| ----------- | ------------------------- | ------- |
+| `aspects`   | `AspectSummary[]`         | —       |
+| `sortBy`    | `'orb'` \| `'importance'` | `'orb'` |
+| `className` | `string`                  | —       |
+| `style`     | `CSSProperties`           | —       |
 
 `'orb'` puts the tightest, most exact aspects first; `'importance'` orders by
 the `Planet` declaration order of the `from` body (falling back to `to` to
 break ties). A body an aspect names that isn't a `Planet` — the ascendant or
 midheaven, say — is rendered by its raw key rather than failing.
+
+`className`/`style` land on each table's `<table>` element; reach header or
+body cells with ordinary descendant selectors (e.g. `.my-table th`,
+`.my-table td:nth-child(3)`) rather than a per-cell styling API.
 
 Both `sortPlacements`/`sortAspects` (the sorting logic itself) and
 `PLANET_LABEL`/`ASPECT_SYMBOL` (the display-name/glyph lookup tables the
