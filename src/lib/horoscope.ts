@@ -57,7 +57,14 @@ export type Cusp = {
 
 /**
  * Casts a chart for a date and place using circular-natal-horoscope-js.
- * @param date - The moment to cast for, in the local time of `place`.
+ * @param date - The wall-clock birth moment at `place` (NOT a true UTC
+ * instant — circular-natal-horoscope-js resolves `place`'s historical
+ * timezone itself and expects the raw calendar/clock fields). Read via UTC
+ * getters, so build it with `Date.UTC(year, month, day, hour, minute)` (month
+ * 0-indexed) rather than a string-parsed or locally-constructed `Date`: both
+ * forms are read back out differently depending on the machine's own
+ * timezone, which silently shifts the birth time. `Date.UTC(...)` pins the
+ * fields so the result is identical no matter where this code runs.
  * @param place - The latitude/longitude the chart is cast for.
  * @param options - Overrides for house system, zodiac, aspects, orbs, and
  * language; any field left out falls back to {@link DEFAULT_HOROSCOPE_OPTIONS}.
@@ -68,11 +75,11 @@ export function getHoroscope(
   options?: HoroscopeOptions,
 ): Horoscope {
   const origin = new Origin({
-    year: date.getFullYear(),
-    month: date.getMonth(), // 0-indexed, which is what the library expects
-    date: date.getDate(),
-    hour: date.getHours(),
-    minute: date.getMinutes(),
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth(), // 0-indexed, which is what the library expects
+    date: date.getUTCDate(),
+    hour: date.getUTCHours(),
+    minute: date.getUTCMinutes(),
     ...place,
   });
 

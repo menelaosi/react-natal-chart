@@ -22,8 +22,11 @@ const docsDir = join(__dirname, '../docs');
 mkdirSync(docsDir, { recursive: true });
 
 // A fixed, arbitrary birth for a reproducible example — not anyone real.
+// getHoroscope reads UTC fields (see its contract in README.md), so the date
+// is built via Date.UTC rather than a string-parsed Date — otherwise this
+// script would render a different chart depending on the machine's timezone.
 const birth = { latitude: 40.7128, longitude: -74.006 }; // New York, NY
-const natal = getHoroscope(new Date('1990-06-15T08:30:00'), birth);
+const natal = getHoroscope(new Date(Date.UTC(1990, 5, 15, 8, 30)), birth);
 
 function writeSvg(name, element) {
   const markup = renderToStaticMarkup(element);
@@ -41,8 +44,8 @@ writeSvg(
   createElement(AstrologyChart, { horoscope: natal, width: 640, height: 640 }),
 );
 
-const transitNow = getHoroscope(new Date('2026-09-11T12:00:00'), birth);
-const transitNext = getHoroscope(new Date('2026-09-12T12:00:00'), birth);
+const transitNow = getHoroscope(new Date(Date.UTC(2026, 8, 11, 12, 0)), birth);
+const transitNext = getHoroscope(new Date(Date.UTC(2026, 8, 12, 12, 0)), birth);
 const contacts = rankTransitContacts(getTransitContacts(natal, transitNow, transitNext));
 
 writeSvg(
@@ -53,4 +56,16 @@ writeSvg(
     height: 640,
     transit: { horoscope: transitNow, contacts },
   }),
+);
+
+// Same birth, a time-based house system — cusps land at uneven angles instead
+// of the default whole-sign's even 30° steps, so this is the clearest visual
+// example of the houseSystem option.
+const placidusNatal = getHoroscope(new Date(Date.UTC(1990, 5, 15, 8, 30)), birth, {
+  houseSystem: 'placidus',
+});
+
+writeSvg(
+  'example-placidus.svg',
+  createElement(AstrologyChart, { horoscope: placidusNatal, width: 640, height: 640 }),
 );

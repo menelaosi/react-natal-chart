@@ -5,7 +5,9 @@ import { getHoroscope } from './horoscope';
 
 const BIRTH_DATE_TIME = '1990-06-15T08:30:00';
 const PLACE: PlaceInput = { latitude: 40.7128, longitude: -74.006, label: 'New York, NY' };
-const horoscope = getHoroscope(new Date(BIRTH_DATE_TIME), PLACE);
+// getHoroscope reads UTC fields (see its contract); Date.UTC(1990, 5, 15, 8, 30)
+// pins the same wall-clock birth time BIRTH_DATE_TIME describes for display.
+const horoscope = getHoroscope(new Date(Date.UTC(1990, 5, 15, 8, 30)), PLACE);
 const summary = buildChartSummary(horoscope, BIRTH_DATE_TIME, PLACE);
 
 describe('buildChartSummary', () => {

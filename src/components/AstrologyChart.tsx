@@ -1,5 +1,5 @@
 import { Horoscope } from 'circular-natal-horoscope-js';
-import { memo } from 'react';
+import { memo, useId } from 'react';
 import type { AspectLine } from '../lib/aspectStyle';
 import { assembleLocatedPoints, FULL_CIRCLE, getPointPosition } from '../lib/geometry';
 import {
@@ -48,7 +48,24 @@ type AstrologyChartProps = {
     horoscope: Horoscope;
     contacts: readonly TransitContact[];
   };
+  /** Accessible name for the SVG (its `<title>`). Defaults to a generic label. */
+  readonly title?: string;
+  /** Accessible long description for the SVG (its `<desc>`). Defaults to a generic summary. */
+  readonly description?: string;
 };
+
+const DEFAULT_TITLE = 'Natal chart';
+const DEFAULT_TRANSIT_TITLE = 'Natal chart with transits';
+
+const DEFAULT_DESCRIPTION =
+  'An astrological wheel chart: the zodiac signs and house cusps form concentric ' +
+  'rings around the centre, with each planet placed at its position along the ' +
+  'ecliptic and lines connecting the planets in aspect. The same data is also ' +
+  'available as text via the PlacementTable and AspectTable components.';
+
+const DEFAULT_TRANSIT_DESCRIPTION =
+  `${DEFAULT_DESCRIPTION} An outer ring shows the transiting planets' current ` +
+  'positions, with dashed lines to the natal points they contact.';
 
 // Extra breathing room outside the natal wheel for the transit ring; the wheel
 // shrinks by this much when the bi-wheel is shown.
@@ -159,14 +176,26 @@ function getLocatedPoints(
  * The natal wheel as one SVG. Derives each ring's radius from `radius`, resolves
  * body and cusp longitudes from the library `horoscope`, and composes the
  * background / signs / ruler / planets / cusps / axis subcomponents. `shift`
- * rotates the whole wheel so the Ascendant sits on the left.
+ * rotates the whole wheel so the Ascendant sits on the left. The SVG carries
+ * `role="img"` with a `<title>`/`<desc>` for screen readers — pass `title`/
+ * `description` to replace the generic defaults with the specifics of this
+ * chart (e.g. the native language, or a plain-language summary of the
+ * placements).
  */
 function AstrologyChartComponent({
   horoscope,
   height = 800,
   width = 800,
   transit,
+  title,
+  description,
 }: AstrologyChartProps) {
+  // Unique per rendered chart, so multiple wheels on one page (e.g. a natal
+  // chart next to a transit bi-wheel) don't collide on id — aria-labelledby
+  // must point at an id unique to this document.
+  const titleId = useId();
+  const descriptionId = useId();
+
   // Center point of chart based on provided height and width
   const x = width / 2;
   const y = height / 2;
@@ -195,7 +224,17 @@ function AstrologyChartComponent({
   const transitPositions = transit ? getCelestialBodyPositions(transit.horoscope) : undefined;
 
   return (
-    <svg id="chart" viewBox={`0 0 ${height} ${width}`} preserveAspectRatio="xMinYMin meet">
+    <svg
+      id="chart"
+      viewBox={`0 0 ${height} ${width}`}
+      preserveAspectRatio="xMinYMin meet"
+      role="img"
+      aria-labelledby={`${titleId} ${descriptionId}`}
+    >
+      <title id={titleId}>{title ?? (transit ? DEFAULT_TRANSIT_TITLE : DEFAULT_TITLE)}</title>
+      <desc id={descriptionId}>
+        {description ?? (transit ? DEFAULT_TRANSIT_DESCRIPTION : DEFAULT_DESCRIPTION)}
+      </desc>
       <circle cx={x} cy={y} r={thickness} fill={WHITE} />
       <Aspects point={point} radius={thickness} shift={shift} lines={aspectLines} />
       {transit && transitPositions && (

@@ -1,5 +1,5 @@
 import type { Horoscope } from 'circular-natal-horoscope-js';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Planet } from '../types';
 import {
   aspectKeyFor,
@@ -12,8 +12,11 @@ import {
 } from './horoscope';
 
 // A fixed birth moment/place, reused across tests so every assertion below is
-// checked against the same real cast rather than a mock.
-const BIRTH_DATE = new Date('1990-06-15T08:30:00');
+// checked against the same real cast rather than a mock. Built via Date.UTC
+// per getHoroscope's documented contract — its UTC fields (08:30) are the
+// wall-clock birth time at BIRTH_PLACE, independent of the machine running
+// the test.
+const BIRTH_DATE = new Date(Date.UTC(1990, 5, 15, 8, 30));
 const BIRTH_PLACE = { latitude: 40.7128, longitude: -74.006 };
 
 describe('getHoroscope', () => {
@@ -56,6 +59,87 @@ describe('getHoroscope', () => {
     const horoscope = getHoroscope(BIRTH_DATE, BIRTH_PLACE, { zodiac: 'sidereal' });
     const firstCusp = cuspLongitude(horoscope.Houses[0]) as number;
     expect(firstCusp % 30).toBeCloseTo(0);
+  });
+});
+
+describe('getHoroscope — UTC contract', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('reads the date fields in UTC, independent of the process timezone', () => {
+    // Two timezones on opposite sides of UTC, both far from it — if getHoroscope
+    // ever reads local getters again, this is picked up as a changed Origin.
+    vi.stubEnv('TZ', 'Pacific/Kiritimati'); // UTC+14
+    const farAhead = getHoroscope(BIRTH_DATE, BIRTH_PLACE);
+
+    vi.stubEnv('TZ', 'Etc/GMT+12'); // UTC-12
+    const farBehind = getHoroscope(BIRTH_DATE, BIRTH_PLACE);
+
+    for (const horoscope of [farAhead, farBehind]) {
+      expect(horoscope.origin.year).toBe(1990);
+      expect(horoscope.origin.month).toBe(5);
+      expect(horoscope.origin.date).toBe(15);
+      expect(horoscope.origin.hour).toBe(8);
+      expect(horoscope.origin.minute).toBe(30);
+    }
+  });
+});
+
+describe('getHoroscope — edge-case births', () => {
+  it('casts correctly in the southern hemisphere', () => {
+    // Sydney — June 15th tropical sun is still Gemini regardless of hemisphere.
+    const horoscope = getHoroscope(BIRTH_DATE, { latitude: -33.8688, longitude: 151.2093 });
+    expect(horoscope.CelestialBodies.sun.Sign.key).toBe('gemini');
+    for (const house of horoscope.Houses) {
+      expect(cuspLongitude(house)).not.toBeNaN();
+    }
+  });
+
+  it('casts without error at a polar latitude under the default whole-sign houses', () => {
+    // Svalbard, well inside the Arctic Circle — whole-sign cusps are fixed 30°
+    // steps from the ascendant, so they stay well-defined even where the
+    // ecliptic never crosses the local meridian during polar day/night.
+    const horoscope = getHoroscope(BIRTH_DATE, { latitude: 78.2232, longitude: 15.6267 });
+    for (const house of horoscope.Houses) {
+      const cusp = cuspLongitude(house) as number;
+      expect(cusp).not.toBeNaN();
+      expect(cusp).toBeGreaterThanOrEqual(0);
+      expect(cusp).toBeLessThan(360);
+    }
+  });
+
+  it('casts without error at a polar latitude under a time-based house system', () => {
+    // Placidus/Koch are undefined at the true poles, but circular-natal-horoscope-js
+    // still resolves finite cusps this far into the Arctic Circle — document that
+    // rather than assuming it throws.
+    const horoscope = getHoroscope(
+      BIRTH_DATE,
+      { latitude: 78.2232, longitude: 15.6267 },
+      { houseSystem: 'placidus' },
+    );
+    for (const house of horoscope.Houses) {
+      expect(cuspLongitude(house)).not.toBeNaN();
+    }
+  });
+
+  it('casts without error in the US spring-forward DST gap, when the local clock skips this time', () => {
+    // 2021-03-14 02:30 America/New_York never occurred — clocks jumped from
+    // 01:59:59 EST straight to 03:00:00 EDT. The underlying timezone resolution
+    // treats it as a valid wall-clock instant rather than failing.
+    const dstGap = new Date(Date.UTC(2021, 2, 14, 2, 30));
+    const horoscope = getHoroscope(dstGap, BIRTH_PLACE);
+    expect(horoscope.origin.hour).toBe(2);
+    expect(longitudeOf(horoscope.CelestialBodies.sun)).not.toBeNaN();
+  });
+
+  it('casts without error in the US fall-back DST overlap, when the local clock repeats this time', () => {
+    // 2021-11-07 01:30 America/New_York happened twice — once in EDT, once in
+    // EST. Both readings should still produce a valid chart.
+    const dstOverlap = new Date(Date.UTC(2021, 10, 7, 1, 30));
+    const horoscope = getHoroscope(dstOverlap, BIRTH_PLACE);
+    expect(horoscope.origin.hour).toBe(1);
+    expect(longitudeOf(horoscope.CelestialBodies.sun)).not.toBeNaN();
   });
 });
 

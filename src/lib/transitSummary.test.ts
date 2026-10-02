@@ -4,7 +4,7 @@ import { getHoroscope } from './horoscope';
 import { getTransitContacts, rankTransitContacts } from './transits';
 import { buildTransitSummary, type TransitFrame } from './transitSummary';
 
-const BIRTH_DATE = new Date('1990-06-15T08:30:00');
+const BIRTH_DATE = new Date(Date.UTC(1990, 5, 15, 8, 30));
 const PLACE: PlaceInput = { latitude: 40.7128, longitude: -74.006, label: 'New York, NY' };
 
 const natal = getHoroscope(BIRTH_DATE, PLACE);

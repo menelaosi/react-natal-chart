@@ -7,7 +7,7 @@ import {
   type TransitContact,
 } from './transits';
 
-const BIRTH_DATE = new Date('1990-06-15T08:30:00');
+const BIRTH_DATE = new Date(Date.UTC(1990, 5, 15, 8, 30));
 const BIRTH_PLACE = { latitude: 40.7128, longitude: -74.006 };
 
 function contact(overrides: Partial<TransitContact>): TransitContact {

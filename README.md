@@ -21,7 +21,7 @@ npm install @menelaos/react-natal-chart circular-natal-horoscope-js
 ```tsx
 import { AstrologyChart, getHoroscope } from '@menelaos/react-natal-chart';
 
-const horoscope = getHoroscope(new Date('1990-06-15T08:30:00'), {
+const horoscope = getHoroscope(new Date(Date.UTC(1990, 5, 15, 8, 30)), {
   latitude: 40.7128,
   longitude: -74.006,
 });
@@ -37,6 +37,15 @@ aspects). You can also build the `Horoscope` yourself and pass it straight
 through — the component only reads from it, it never needs your birth data
 directly.
 
+**`date` is read in UTC.** `getHoroscope` takes the wall-clock birth time at
+`place` — not a true UTC instant, since `circular-natal-horoscope-js` resolves
+`place`'s own historical timezone internally — and reads it off `date` with
+UTC getters (`getUTCFullYear`, `getUTCHours`, ...). Build `date` with
+`Date.UTC(year, month, day, hour, minute)` (month 0-indexed), as above, rather
+than a string-parsed or locally-constructed `Date`: both of those are read
+back differently depending on the machine's own timezone, which silently
+shifts the birth time by however many hours that machine sits from UTC.
+
 ### Customizing the cast (`getHoroscope` options)
 
 Pass a third `options` argument to override any of the defaults above —
@@ -48,6 +57,13 @@ const horoscope = getHoroscope(birthDate, birthPlace, {
   zodiac: 'sidereal',
 });
 ```
+
+The default whole-sign houses give every cusp an even 30° step from the
+Ascendant; a time-based system like `placidus` spaces them unevenly instead:
+
+<p align="center">
+  <img src="docs/example-placidus.svg" alt="Example chart with placidus houses" width="420">
+</p>
 
 `options` accepts:
 
@@ -112,6 +128,22 @@ function App() {
     />
   );
 }
+```
+
+### Accessibility
+
+`AstrologyChart`'s `<svg>` carries `role="img"` with a `<title>`/`<desc>`, so
+screen readers announce it as a single labelled image rather than silently
+skipping it or reading out its internal glyph paths. The defaults are generic
+("Natal chart" / a description of what the wheel shows); pass your own for a
+reading specific to the chart:
+
+```tsx
+<AstrologyChart
+  horoscope={natal}
+  title="Sun in Gemini, Moon in Libra, Leo rising"
+  description="Birth chart for June 15, 1990, 8:30 AM, New York, NY."
+/>
 ```
 
 ### Table components
